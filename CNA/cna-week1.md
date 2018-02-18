@@ -1,137 +1,188 @@
-# Fun with container images
+# CNA H2K Session Week 1
 
-## Create Container
+This session walks through the effects of namespacing.  The end result should give some context around containers and how they differ from Virtual Machines.
+
+## Fun with container images
+
+1. Create Container
+
 `docker run -it vmware\photon2 /bin/bash`
 
-## Create test dir
-`cd /root`
-`mkdir testfolder`
-`echo "hi" > /root/test2/testfile`
-`exit`
+2. Create test dir
 
-## List container name
+```
+cd /root
+mkdir testfolder
+echo "hi" > /root/test2/testfile
+exit
+```
+
+3. List container name
+
 `docker ps -a`
 
-## If I issue a docker run command do I see the file?
+4. If I issue a docker run command do I see the file?
+
 `docker run -it vmware\photon2 /bin/bash`
 
-## List all docker containers
+5. List all docker containers
+
 `docker ps -a`
 
-## Lets check out the filesystem of this container
+6. Lets check out the filesystem of this container
+
 `docker commit <container> <repo>:<tag>`
 
-## Grab image name
+7. Grab image name
+
 `docker images ls`
 
-## Export this image
-`mkdir extract`
-`docker save <imageid> > /root/extract/ci.tar`
-`cd /root/extract`
-`tar -xf ci.tar`
+8. Export this image
 
-## Lets take a look at some metadeta
+```
+mkdir extract
+docker save <imageid> > /root/extract/ci.tar
+cd /root/extract
+tar -xf ci.tar
+```
+
+9. Lets take a look at some metadeta
+
 `cat <sha>.json`
 
-## Lets inspect these tarfiles
-`cd <sha>`
-`tar -xf layer.tar`
-`ls`
+10. Lets inspect these tarfiles
 
-## Lets inspect the other tarfile
-`cd <sha>`
-`tar -xf layer.tar`
-`ls root`
-`cat root/testfolder/testfile`
+```
+cd <sha>
+tar -xf layer.tar
+ls
+```
 
-## How are these folders used? Linux filesystem mounts provide a namespace for folders and files
+11. Lets inspect the other tarfile
 
-## List mounts???
-`ls`
-`mount`
+```
+cd <sha>
+tar -xf layer.tar
+ls root
+cat root/testfolder/testfile
+```
 
-##  The following command allows a process to disassociate parts of its execution context that are currently being shared with other processes).  Create another term window:
-`unshare -m bash`
-`mkdir /root/testspace`
-`cd /root/testspace`
-`mkdir /root/temp/mymount`
-`mount --bind /root/extract/<sha>/root/testfolder/ /root/temp/mymount/`
+12. How are these folders used? Linux filesystem mounts provide a namespace for folders and files
 
-## Can previous term window see the contents of mymount?
+```
+ls
+mount
+```
+
+13. The following command allows a process to disassociate parts of its execution context that are currently being shared with other processes).  Create another term window:
+
+```
+unshare -m bash
+mkdir /root/testspace
+cd /root/testspace
+mkdir /root/temp/mymount
+mount --bind /root/extract/<sha>/root/testfolder/ /root/temp/mymount/
+```
+
+14. Can previous term window see the contents of mymount?
+
 `ls /root/temp/mymount`
 
-## Fun with union filesystems
+15. Fun with union filesystem - Check storage driver
 
-## Check storage driver
 `docker info`
 
-## Lets verify mounts, lower dir and current dir
-`docker run -it vmware/photon2 /bin/bash`
-`mount | grep overlay`
+16. Lets verify mounts, lower dir and current dir
 
-## Do multiple containers of the same image share the same lowerdir?  In another term window:
-`docker run -it vmware/photon2 /bin/bash`
-`mount | grep overlay`
-`exit`
+```
+docker run -it vmware/photon2 /bin/bash
+mount | grep overlay
+```
 
-## where is all this stuff stored?  The following as the image layers:
+17. Do multiple containers of the same image share the same lowerdir?  In another term window:
+
+```
+docker run -it vmware/photon2 /bin/bash
+mount | grep overlay
+exit
+```
+
+18. where is all this stuff stored?  The following as the image layers:
+
 `ls /var/lib/docker/overlay2`
 
-## The diff folder in each layer folder contains the layers contents, merged is the union of diff and lower
-## When a write occurs to an existing file for the first time a copy_up command is issued to move from lower to current
-## When a file is deleted within a container, a whiteout file is created in the current layer.  The underlying images are read only so not affected
+- The diff folder in each layer folder contains the layers contents, merged is the union of diff and lower
+- When a write occurs to an existing file for the first time a copy_up command is issued to move from lower to current
+- When a file is deleted within a container, a whiteout file is created in the current layer.  The underlying images are read only so not affected
 
 # Running containers
 
 ## How isolated are containers?
 
-## On term 1
+1. On term 1
+
 `docker run redis`
 
-## On term 2
-`ps aux | grep redis`
-`tdnf install psmisc`
-`pstree -alhps <redis docker pid>`
+2. On term 2
 
-## What happens when we issue a kill command on the containerised process?
+```
+ps aux | grep redis
+tdnf install psmisc
+pstree -alhps <redis docker pid>
+```
+
+3. What happens when we issue a kill command on the containerised process?
+
 `kill -9 <pid>`
 
 ## UTS Namespace
 
-### On term 1
-`docker run -it vmware/photon2 /bin/bash`
-`hostname`
+1. On term 1
 
-### On term 2
+```
+docker run -it vmware/photon2 /bin/bash
+hostname
+```
+
+2. On term 2
+
 `hostname`
 
 ## IPC Namespace
 
-### On term 1
+1. On term 1
+
 `ipcs`
 
-### On term 2
+2. On term 2
+
 `ipcs`
 
 ## PID Namespace
 
-### On term 1
+1. On term 1
+
 `ps -A`
 
-### On term 2
+2. On term 2
+
 `ps -A`
 
 ## Network Namespace
 
-### On term 1
-`ifconfig`
-`exit`
-`unshare -n bash`
-`ifconfig`
-`exit`
+1. On term 1
 
-### On term 2
-ifconfig`
+```
+ifconfig
+exit
+unshare -n bash
+ifconfig
+exit
+```
+
+2. On term 2
+
+`ifconfig`
 
 # Putting it all together
 
