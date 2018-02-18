@@ -6,7 +6,7 @@ This session walks through the effects of namespacing.  The end result should gi
 
 1. Create Container
 
-`docker run -it vmware\photon2 /bin/bash`
+`docker run -it vmware/photon2 /bin/bash`
 
 2. Create test dir
 
@@ -23,7 +23,7 @@ exit
 
 4. If I issue a docker run command do I see the file?
 
-`docker run -it vmware\photon2 /bin/bash`
+`docker run -it vmware/photon2 /bin/bash`
 
 5. List all docker containers
 
