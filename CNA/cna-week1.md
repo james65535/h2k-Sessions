@@ -184,6 +184,17 @@ exit
 
 `ifconfig`
 
+## User Namespace
+
+1. On any term
+
+```
+id
+unshare -U bash
+id
+exit
+```
+
 # Putting it all together
 
 ## runC and containerc
@@ -192,3 +203,5 @@ exit
 - https://en.wikipedia.org/wiki/Operating-system-level_virtualization
 - https://en.wikipedia.org/wiki/Hypervisor
 - https://en.wikipedia.org/wiki/Linux_namespaces
+- https://containerd.io/
+
