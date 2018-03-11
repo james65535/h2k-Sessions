@@ -24,6 +24,12 @@ Write-Host "string: " $varString
 [array]$varArray = "monday", "tuesday", "wednesday"
 Write-Host "array: " $varArray
 
+[HashTable]$varHashTable = @{
+    "cat" = "feline"
+    "dog" = "canine"
+}
+Write-Host "hash table cat type: " $varHashTable["cat"]
+
 # Arithmetic Examples
 Write-Host "1+2 =" [int](1+2)
 Write-Host "1-2 =" [int](1-2)
