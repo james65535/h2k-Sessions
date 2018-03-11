@@ -30,6 +30,11 @@ Write-Host "array: " $varArray
 }
 Write-Host "hash table cat type: " $varHashTable["cat"]
 
+$varUser = New-Object psobject
+Add-Member -InputObject $varUser -MemberType NoteProperty -Name name -Value "Bob"
+Add-Member -InputObject $varUser -MemberType NoteProperty -Name age -Value 22
+Write-Host "User" $varUser.name "is" $varUser.age "years old"
+
 # Arithmetic Examples
 Write-Host "1+2 =" [int](1+2)
 Write-Host "1-2 =" [int](1-2)
