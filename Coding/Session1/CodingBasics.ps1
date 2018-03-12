@@ -67,7 +67,7 @@ while ($whileI -le 2) {
 $ifBool = $true
 if ($ifBool -eq $true) {
     write-host "ifBool = true"
-} elseif ($ifBool-eq $false) {
+} elseif ($ifBool -eq $false) {
     write-host "ifBool = false"
 } else {
     Write-Host "ifBool is undefined!"
