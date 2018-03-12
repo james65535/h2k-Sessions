@@ -15,6 +15,7 @@ function createVMs {
     Param ([int]$numVMs)
     for ($i = 0; $i -lt $numVMs;$i++) {
         $vmName = ([char](65+$i))
+        # See `get-help new-vm` and `get-help new-vm -examples` for more info
         $result = New-VM -Name $vmName -VMHost $vmHost -Datastore $vmDatastore -DiskGB 1 -MemoryGB 1 -NumCpu 1 -Portgroup "VM Network"
     }
 }
