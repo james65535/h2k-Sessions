@@ -63,7 +63,15 @@ docker network inspect bridge
 exit # from container
 ```
 
-7. Can we pass traffic from containers on the same bridge beyond just the exposed port?
+7. These network interfaces are virtual ethernet interfaces and are created in pairs.  These could even be created manually.
+
+```
+ip link add vethA type veth peer name vpeerA
+ip a
+ip link delete vethA
+```
+
+8. Can we pass traffic from containers on the same bridge beyond just the exposed port?
 
 ```
 docker run -itp 9001:9001 centos /bin/bash
@@ -75,7 +83,7 @@ exit # from container 1
 exit # from container 2
 ```
 
-8. Docker handles DNS a certain way for bridged container (https://docs.docker.com/v17.09/engine/userguide/networking/default_network/configure-dns/)
+9. Docker handles DNS a certain way for bridged container (https://docs.docker.com/v17.09/engine/userguide/networking/default_network/configure-dns/)
 
 ```
 docker run -it vmware/photon2 /bin/bash
@@ -89,7 +97,7 @@ Positives/Negatives
 
 Encapsulates network packets using VXLAN to create an overlay network which can span multiple docker hosts.
 
-9. We can create docker networks using the overlay driver but first we need to enable swarm mode
+10. We can create docker networks using the overlay driver but first we need to enable swarm mode
 
 ```
 docker swarm init # if not already enabled
@@ -114,7 +122,7 @@ Supports two modes:
 - Bridge
 - 802.1q Trunk which can be an l3 or l2 bridge
 
-10. Create a docker network using the MACVLAN Driver
+11. Create a docker network using the MACVLAN Driver
 
 ```
 ip a
