@@ -35,13 +35,15 @@ docker kill
 
 ### What is the networking for a container?
 
+5. Use Docker info to display available network drivers
+
 `docker info`
 
 ### Docker Bridge Network
 
 Bridge (native linux capability - https://wiki.linuxfoundation.org/networking/bridge)
 
-5. Example of container running in a Linux bridge
+6. Example of container running in a Linux bridge
 
 ```
 docker run -itp 9000:9000 vmware/photon2 /bin/bash
@@ -55,7 +57,7 @@ docker network inspect bridge
 exit # from container
 ```
 
-6. Can we pass traffic from containers on the same bridge beyond just the exposed port?
+7. Can we pass traffic from containers on the same bridge beyond just the exposed port?
 
 ```
 docker run -itp 9001:9001 centos /bin/bash
@@ -67,7 +69,7 @@ exit # from container 1
 exit # from container 2
 ```
 
-7. Docker handles DNS a certain way for bridged container (https://docs.docker.com/v17.09/engine/userguide/networking/default_network/configure-dns/)
+8. Docker handles DNS a certain way for bridged container (https://docs.docker.com/v17.09/engine/userguide/networking/default_network/configure-dns/)
 
 ```
 docker run -it vmware/photon2 /bin/bash
@@ -79,7 +81,7 @@ Positives/Negatives
 
 ### Docker Overlay Network
 
-8. We can create docker networks using the overlay driver but first we need to enable swarm mode
+9. We can create docker networks using the overlay driver but first we need to enable swarm mode
 
 ```
 docker swarm init
