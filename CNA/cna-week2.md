@@ -1,6 +1,6 @@
 # CNA H2K Session Week 2
 
-This session walks through the basics of container networking with Docker.  Last session we learned about namespacing and experitented with filesystem namespacing and mounts.  To confirm our knowledge, can a container run a different distribution of Linux than from the host OS?  Why is the answer possible?
+This session walks through the basics of container networking with Docker.  Last session we learned about namespacing and experimented with filesystem namespacing and mounts.  To confirm our knowledge, can a container run a different distribution of Linux than from the host OS?  Why is the answer possible?
 
 ## Fun with container networking
 
@@ -10,6 +10,7 @@ This session walks through the basics of container networking with Docker.  Last
 
 ```
 unshare -n /bin/bash
+ip a
 exit
 ```
 
