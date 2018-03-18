@@ -6,6 +6,8 @@ This session walks through the basics of container networking with Docker.  Last
 
 ### Namespacing for Networking Quick Re-Cap
 
+"Each network interface (physical or virtual) is present in exactly 1 namespace and can be moved between namespaces." - https://en.wikipedia.org/wiki/Linux_namespaces
+
 1. Create a network namespace for a process, in this case bash
 
 ```
@@ -18,9 +20,12 @@ exit
 
 2. Use an existing Linux host with Docker or download Photon OS as a VM for fusion or workstation: https://github.com/vmware/photon/wiki/Downloading-Photon-OS
 
-3. Inside the Photon OS, install ping
+3. Inside the Photon OS, install ping and start the Docker Daemon
 
-`tdnf install iputils # for ping`
+```
+tdnf install iputils # for ping
+systemctl start docker
+```
 
 ### Iptables
 
@@ -30,7 +35,8 @@ exit
 iptables -L
 docker run -dp 8443:80 nginx
 iptables -L
-docker kill
+docker ps # get container name
+docker kill <container name>
 ```
 
 ### What is the networking for a container?
@@ -64,7 +70,7 @@ docker run -itp 9001:9001 centos /bin/bash
 docker run -itp 9002:9002 centos /bin/bash # from host
 ifconfig # from container 1
 ifconfig # from container 2
-ping container2IP # from container 1
+ping <container2IP> # from container 1
 exit # from container 1
 exit # from container 2
 ```
@@ -81,10 +87,12 @@ Positives/Negatives
 
 ### Docker Overlay Network
 
+Encapsulates network packets using VXLAN to create an overlay network which can span multiple docker hosts.
+
 9. We can create docker networks using the overlay driver but first we need to enable swarm mode
 
 ```
-docker swarm init
+docker swarm init # if not already enabled
 docker network create --attachable -d overlay overlay-net
 docker network ls
 docker run --network=overlay-net  --name=test1 nginx
@@ -96,10 +104,27 @@ docker kill test2
 
 Positives/Negatives
 - Multi host
-- Uses NAT outside of overlay network
+- Uses NAT for communication outside of overlay network
 
-### Docker MacVLAN Network
+### Docker MACVLAN Network
+
+Creates sub interfaces on a network interface. (https://docs.docker.com/network/macvlan/)
+Allows containers to be assigned IP addresses directly.  Supports two modes:
+- Bridge
+- 802.1q Trunk which can be an l3 or l2 bridge
+
+10. Create a docker network using the MACVLAN Driver
+
+```
+ip a
+docker network create -d macvlan --subnet=192.168.20.0/24 --gateway=192.168.20.1 --ip-range=192.168.20.0/25 -o parent=eth0 macvlan-net # These need to be addresses from the physical network
+docker network ls
+docker run -it --network=macvlan-net vmware/photon2 /bin/bash
+ifconfig
+```
 
 
 Positives/Negatives
 - Matches external IP to container
+- There may be a short limit to pool of MAC addresses on the host
+- 
