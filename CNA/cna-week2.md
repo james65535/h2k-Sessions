@@ -20,7 +20,7 @@ exit
 
 3. Inside the Photon OS, install ping
 
-`tdnf install iputils (for ping)`
+`tdnf install iputils # for ping`
 
 ### Iptables
 
@@ -61,7 +61,7 @@ exit # from container
 docker run -itp 9001:9001 centos /bin/bash
 docker run -itp 9002:9002 centos /bin/bash # from host
 ifconfig # from container 1
-ifconfig # from container 2)
+ifconfig # from container 2
 ping container2IP # from container 1
 exit # from container 1
 exit # from container 2
