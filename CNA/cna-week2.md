@@ -108,8 +108,9 @@ Positives/Negatives
 
 ### Docker MACVLAN Network
 
-Creates sub interfaces on a network interface. (https://docs.docker.com/network/macvlan/)
-Allows containers to be assigned IP addresses directly.  Supports two modes:
+Creates sub interfaces on a network interface.  Allows containers to be assigned IP addresses directly. (https://docs.docker.com/network/macvlan/)
+
+Supports two modes:
 - Bridge
 - 802.1q Trunk which can be an l3 or l2 bridge
 
@@ -127,4 +128,4 @@ ifconfig
 Positives/Negatives
 - Matches external IP to container
 - There may be a short limit to pool of MAC addresses on the host
-- 
+- Its possible to flood a VLAN with a large number of MAC addresses
