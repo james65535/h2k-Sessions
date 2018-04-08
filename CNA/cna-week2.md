@@ -24,7 +24,7 @@ exit
 
 ```
 tdnf install iputils # for ping
-systemctl start docker
+systemctl start docker # to start the docker daemon
 ```
 
 ### Iptables
