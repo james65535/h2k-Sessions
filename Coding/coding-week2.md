@@ -53,10 +53,10 @@ ls .git
 
 Important Files/Folders:
 
-- config (a configuration file to store how you want your repo configured, there can be other config files such as a global config)
-- HEAD a link to a branch
-- hooks (a place for scripts which will run on state transitions similar to vRO)
-- objects (Where the snapshots of your commits exist)
+- config: (a configuration file to store how you want your repo configured, there can be other config files such as a global config)
+- HEAD: a link to a branch
+- hooks: (a place for scripts which will run on state transitions similar to vRO)
+- objects: (Where the compressed snapshots of your commits exist)
 
 Basic Operations
 
@@ -84,35 +84,55 @@ git checkout master
 
 Think of the commit timeline of a repository as a tree.  We start off with the trunk and over time the trunk may split off into seperate "branches" where we will have multiple commit timelines existing simultaneously.  Sometimes you will want to create branches to work on a set of files over a prolonged period of time while keeping an option open to work on the same set but with other changes.  For example, some reasons for branching:
 
-- A Feature Branch
+- A Feature Branch or Development Branch
 - A Fix Branch
 
 Some terms:
 
-- Branch: A split from the current branch to create a new branch
+- Branch: A split from the current commit timeline
+- Master: The default branch when a repo is created
 - Tip: The last commit in a branch
-- Head: A reference to the currently checked out commit (last commit made)
+- Head: A reference to the currently checked out commit, when head is not the tip of a branch it is considered detatched
 - Merge: To bring a commit from one branch into another
 - Rebase: Replacing the commit history of one branch with another
+
+To create a new branch:
+
+```
+git checkout -b <branchname>
+# create changes
+git add -A
+git commit -m "<commit message>"
+# Optional if using a remote like github
+git push -u origin <branch name>
+```
 
 ### Working with Others
 
 With a DVCS, for when multiple users want to work together, there are a number of options available.
 
+- Remote: A location on a network to another copy of the repository
+- Origin: The upstream remote
+- Fork: Creates a local copy of a repository so you don't have to work directly with the initial repository
+
+To add an existing local repo to GitHub:
+
+1. Create repo on github
+2. Execute the following commands on the local machine:
 
 ```
-git clone
+git remote add origin https://github.com/<username>/<reponame>.git
+git push -u origin master
 ```
 
-```
-git push
-```
+If you want to work on a public repo which is not your own, the common process is:
 
-```
-git pull
-```
-
-fork?
+1. Fork the repo
+2. Clone the fork to your local computer
+3. Create your changes to the project
+4. Create a branch for your changes
+5. Create a pull request
+6. Hope the pull request gets accepted!
 
 ## Using Sprints to Manage Development Projects
 
