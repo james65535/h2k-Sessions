@@ -62,13 +62,23 @@ Basic Operations
 
 To save a snapshot of a file:
 ```
-# to stage a file
+# Stage the changed file
 git add <filename> # or to add all files: git add -a 
 # to create a snapshot of a file
 git commit -m "insert commit message here"
 # Optional command to push changes to another repository like github
 git push -u origin master
 ```
+
+To work with a particular snapshot:
+```
+# To see the list of commits
+git log
+# To work on a particular commit
+git checkout <commit id>
+# To revert back to the latest commit
+git checkout master
+``` 
 
 ### Git Branching
 
@@ -83,8 +93,7 @@ Some terms:
 - Tip: The last commit in a branch
 - Head: A reference to the currently checked out commit (last commit made)
 - Merge: To bring a commit from one branch into another
-- base tip?
-- rebase
+- Rebase: Replacing the commit history of one branch with another
 
 ### Working with Others
 
