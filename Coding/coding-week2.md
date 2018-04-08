@@ -127,11 +127,11 @@ git push -u origin master
 
 If you want to work on a public repo which is not your own, the common process is:
 
-1. Fork the repo
+1. On github go to the desired repo and select fork
 2. Clone the fork to your local computer
-3. Create your changes to the project
+3. Create your changes to the project (for future changes be sure to always pull down the most up to date changes before you work!)
 4. Create a branch for your changes
-5. Create a pull request
+5. Create a pull request from the github page for your fork
 6. Hope the pull request gets accepted!
 
 ## Using Sprints to Manage Development Projects
