@@ -1,10 +1,10 @@
 # Coding H2K Session Week 2
 
-This session walks through the use of a version control system such as git, using github, and if time permits an intro to sprints.  The end result should provide a base for how to work on code with others
+This session walks through the use of a version control system such as git, using github, and if time permits an intro to sprints.  The end result should provide a base for how to work on code with others.
 
 ## What is a Version Control System
 
-A Version Control System or VCS is a way to store project files and capture changes to them over time.  Different VCS exist and handle this capture method in different ways.  Some use delta files to only store differences between changed files, while others store a whole copy of the changed file and use links to users to the different version.
+A Version Control System or VCS is a way to store project files and capture changes to them over time.  Different VCS exist and handle this capture method in different ways.  Some use delta files to only store differences between changed files, while others store a whole copy of the changed file and use links to direct users to different versions.
 
 An example of creating a file with some text, modiyfing it, then accessing the original file contents:
 
@@ -130,9 +130,19 @@ If you want to work on a public repo which is not your own, the common process i
 1. On github go to the desired repo and select fork
 2. Clone the fork to your local computer
 3. Create your changes to the project (for future changes be sure to always pull down the most up to date changes before you work!)
-4. Create a branch for your changes
-5. Create a pull request from the github page for your fork
-6. Hope the pull request gets accepted!
+4. Add your changes and commit them
+5. Pull down a fresh copy from github if other people have been working on your fork
+6. Create a branch for your changes
+7. Push your changes to github
+8. Create a pull request from the github page for your fork
+9. The repo admins will review your request, merge the changed, deny them, or provide further instructions
+
+Sometimes you'll want to ditch your latest commits and pull in a fresh copy from a remote:
+
+```
+git fetch origin
+git reset --hard origin/master
+```
 
 ## Using Sprints to Manage Development Projects
 
