@@ -161,7 +161,7 @@ The idea is that work takes as long as it takes and we can communicate to stakeh
 
 ### Using Points
 
-A point system can be used to figure out how many issues can fit in a particular sprint.  It is preferred not to think of points as units of time, an alternative would be measures of complexity.  This will often times be a finger in the air assessment as compared to previous completed work, or if its the very first issue then the points will be quite arbitrary.  The points themselves can be done any number of ways but an easy one is to use the Fibonacci Sequence: 1, 2, 3, 5, 8, 12, etc...  An example:
+A point system can be used to figure out how many issues can fit in a particular sprint.  It is preferred not to think of points as units of time, an alternative would be measures of complexity.  This will often times be a finger in the air assessment as compared to previous completed work, or if its the very first issue then the points will be quite arbitrary.  The points themselves can be done any number of ways but an easy one is to use the Fibonacci Sequence: 1, 2, 3, 5, 8, 13, 20, etc...  An example:
 
 - To modify the program to accept a command line argument for a config file: 2 points (An easy change)
 - To modify the program to read the config file and parse the line items: 5 points (probably twice the level of difficulty as compared to the first issue)
