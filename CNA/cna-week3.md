@@ -178,32 +178,153 @@ EOL
 kubectl apply -f simple-app-rs.yaml
 kubectl get pods
 kubectl scale --replicas=5 rs/nginx
-kubectl delete rs nginx
+kubectl delete -f simple-app-rs.yaml
 ```
 
 Besides specifying a static number of replicas, we can also auto-scale our ReplicaSets according to available resources such as CPU.
 
-
 ## Service Discovery
-For dynamic runtime platforms like Kubernetes, a mechanism is required to both allow for services to register their location and requestor of services to get that location.  The Kubernetes Service Discovery construct provides a great alternative to DNS.  To create a Service, we define a Service Object which will create a clustered IP address for a set of pods which match the appropriate label selector.  The members of the cluster will be loadbalanced by the kube-proxy service which exists on the Kubernetes worker nodes.  We can then hand this cluster IP address to the inbuilt Kubernetes DNS service and let clients resolve from there.  Example Service Object definition:
+For dynamic runtime platforms like Kubernetes, a mechanism is required to both allow for services to obtain a consistent network location and a requestor of services to get that location.  Its important to note IP addressing for Pods is ephemeral and may not persist through the lifecycle of a pod.  We can create a Service object to tackle this problem.
 
 ```
+cat >simple-app-sd1.yaml <<EOL
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+EOL
+kubectl apply -f simple-app-rs.yaml
+kubectl apply -f simple-app-sd1.yaml
+kubectl get service # Note ClusterIP
+kubectl describe service nginx-service # note the associated Pods
+kubectl run -i --tty centos --image=centos --restart=Never -- sh
+curl nginx-service # should show welcome to nginx
+curl <ClusterIP> # should show welcome to nginx
+exit
+kubectl delete pod centos
+curl <ClusterIP>
+kubectl delete -f simple-app-sd1.yaml
+``` 
 
+You may have noted the Service object creates an internal DNS entry for our service.  If we are consuming this DNS entry within the same namespace then we can just use the service name.  If outside of the namespace then the full address is `<service-name>.<namespace>.svc.cluster.local`.
+
+From the client machine were we able to get a response back from nginx?  If not, then why not?  Looking closely at the IP address provided as ClusterIP.  Would that be routable from your client machine?  Unfortunately no, this ClusterIP is internal to the Kubernetes cluster.  An example where this is useful is connecting Fronts End pods to a collection of Back End pods forming a Back End service.  If we want to create a ClusterIP which is accessible to clients outside of the Kubernetes cluster then we'll need to alter our service definition to use a `NodePort`.
+
+```
+cat >simple-app-sd2.yaml <<EOL
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    port: 80
+  type: NodePort
+EOL
+kubectl apply -f simple-app-sd2.yaml
+kubectl get service # Note the port associated to the ClusterIP
+kubectl describe service nginx-service
+kubectl get nodes -o wide # Note one of the node ip addresses
+curl <NodeIP>:<ClusterIP Port>
+kubectl delete -f simple-app-sd2.yaml
+``` 
+
+In the above case we can access the defined service from any worker node by using the same port.  But what if we want a single IP address for clients to use without limiting them to a single Kubernetes Node?  In this case there's no secret sauce here, we'll need to bring a loadbalancer to the party.  Many loadbalancing solutions exist, some Kubernetes solutions such as Pivotal Container Service with NSX package them in.  To create a loadbalanced service accessible to clients outside of the cluster we can use the type `LoadBalancer`.
+
+```
+cat >simple-app-sd3.yaml <<EOL
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    port: 80
+  type: LoadBalancer
+EOL
+kubectl apply -f simple-app-sd3.yaml
+kubectl get service # Note the external IP
+curl <ExternalIP>
+kubectl delete -f simple-app-sd3.yaml
+kubectl delete -f simple-app-rs.yaml
 ``` 
 
 ## DaemonSets
-A Pod manager to ensure a Pod is scheduled across a Cluster Node set
+If you want to replicate Pods and to ensure a Pod is scheduled on each worker node in Kubernetes cluster, we can use the DaemonSet object.  A reason to do so may be to run a particular agent like a systems monitoring agent or log collector.
 
-## StatefulSets
-Replicated Pods where each Pod gets an indexed hostname
+```
+cat >simple-app-ds.yaml <<EOL
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nginx-daemon
+spec:
+  selector:
+    matchLabels:
+      name: nginx
+  template:
+    metadata:
+      labels:
+        name: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+EOL
+kubectl apply -f simple-app-ds.yaml
+kubectl get pods -o wide # note there is 1 pod for each worker node
+kubectl delete -f simple-app-ds.yaml
+``` 
 
 ## Jobs
-A Pod which runs until the process returns a successful termination
+A Pod which runs until the process returns a successful termination.  Good for one off runs such as batch jobs.  There are a few types of jobs:
+- One Shot: A single pod run
+- Parallel Fixed Completions: Multiple pods run in parallel until total count of requested pods complete
+- Work Queue: Creates pods to consume items in a work queue
+
+Example one shot job request:
+
+```
+cat >simple-app-job.yaml <<EOL
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: bash-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: bash
+        image: centos
+        command: [""]
+      restartPolicy: Never
+EOL
+kubectl apply -f simple-app-job.yaml
+kubectl describe job bash-job
+kubectl delete -f simple-app-job.yaml
+``` 
 
 ## Singletons
 A single instance of a Pod which is not replicated or scaled
 
 ## Deployments
 
+## StatefulSets
+Replicated Pods where each Pod gets an indexed hostname
+
 ## Helpful Links
 - https://github.com/mreferre/yelb (Massimo Re Ferre's demo application)
+- https://v1-9.docs.kubernetes.io/docs/home/ (Choose the correct version to match your Kubernetes implementation)
