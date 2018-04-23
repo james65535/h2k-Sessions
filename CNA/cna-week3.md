@@ -295,7 +295,7 @@ A Pod which runs until the process returns a successful termination.  Good for o
 - Parallel Fixed Completions: Multiple pods run in parallel until total count of requested pods complete
 - Work Queue: Creates pods to consume items in a work queue
 
-Example one shot job request:
+Example One Shot job request:
 
 ```
 cat >simple-app-job.yaml <<EOL
