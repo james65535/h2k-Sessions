@@ -36,7 +36,7 @@ Agile is a culture based upon certain values, much in the same way that DevOps i
 
 ## Using Sprints to Manage Development Projects
 
-Scrum, and a number of other development processes, work in an interative, timeboxed fashion.  A sprint is a block of time used to work on a project.  A sprint will have a defined set of issues (a piece of work) to be done within this time.  Issues may contain the following info:
+Scrum, and a number of other development processes which take influence from Agile Principles, work in an interative, timeboxed fashion.  A sprint is a block of time used to work on a project.  A sprint will have a defined set of issues (a piece of work) to be done within this time.  Issues may contain the following info:
 
 - The name of the issue
 - Issue priority according to project/product owner or stakeholders
@@ -49,7 +49,7 @@ Multiple sprints of equivalent durations are used to work on a project in an int
 
 The idea is that work takes as long as it takes and we can communicate to stakeholders the cadence for releases so that we can manage expectations.  We look to avoid planning out issues far into the future and instead focus on the near term.
 
-### Using Points
+### Sprint Planning
 
 A point system can be used to figure out how many issues can fit in a particular sprint.  It is preferred not to think of points as units of time, an alternative would be measures of complexity.  This will often times be a finger in the air assessment as compared to previous completed work, or if its the very first issue then the points will be quite arbitrary.  The points themselves can be done any number of ways but an easy one is to use the Fibonacci Sequence: 1, 2, 3, 5, 8, 13, 20, etc...  An example:
 
@@ -76,6 +76,23 @@ There are many ways graphical ways to track issues and assign them as sprints.  
 - Cancelled (Sometimes people decide a particular issue is no longer needed, like when a product owner cancels a feature request)
 - Blocked (Where issues go when no more work can occur because of an external dendancy such as another issue being completed or some other reason)
 
+### Daily Scrum
+
+To encourage face to face communication and provide a forum for the team to keep in sync, a Daily Scrum or Standup can be used.  At its most basic level each attendee speaks briefly on the following:
+
+- What they completed yesterday
+- What they're working on today
+- Any anticipated blockers
+
+Brevity is a key virtue here as no one wants to sit in a meeting everyday to hear others ramble on endlessly.  Daily Scrums should be short and to the point.
+
+### Sprint Retrospective
+
+At the end of each sprint, time can be set aside to review a few items:
+- Demo the current to the stakeholders
+- Discuss what went well and what could have been done better when planning this sprint.  If there are a number of issues which were not completed then issue estimation can be discussed.  Or if there are a number of problems with processes or tooling then those can be evaluated.  The key here is keep improving each successive sprint.
+- Discuss what to work on next.
+
 ## Project Tooling
 
 To aid in the automation of manual processes, tools can be used to speed things up.
@@ -86,5 +103,7 @@ To aid in the automation of manual processes, tools can be used to speed things 
 - Release Management: VMware CodeStream, GoCD, Concourse, UrbanCode, etc...
 
 ## Useful Links
-- http://agilemanifesto.org/
 
+- http://agilemanifesto.org/
+- https://en.wikipedia.org/wiki/Scrum_(software_development)
+- https://www.martinfowler.com/articles/continuousIntegration.html
