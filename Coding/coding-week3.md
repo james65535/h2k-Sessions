@@ -2,7 +2,7 @@
 
 Working on complicated actions such as software development and gopher shaving usually necessitates a certain level of cooperation amongst the people involved.  A good way to cooperate is to set and manage expectations, nobody likes unexpected occurences, especially while de-hairing a small rodent.
 
-This week's tutorial will work through how to track the progress of a development project and also how to automate laborious tasks in order to speed up process for releasing stable software.
+This week's tutorial will work through how to track the progress of a development project and also how to automate laborious tasks in order to speed up the process of releasing stable software.
 
 We'll leave the gophers for another time...
 
