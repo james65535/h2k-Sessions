@@ -1,6 +1,7 @@
 # h2k-Sessions
 
 ## Curriculum:
+This repository includes instructions for learning the basics of Cloud Native Applications as well as introductory programming concepts.
 
 ### CNA
 
